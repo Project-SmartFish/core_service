@@ -1,4 +1,4 @@
-package smartfish.modules.user.domain.entity;
+package smartfish.modules.auth.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
