@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
+import smartfish.modules.fish_spot.domain.enums.WaterType;
 
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class FishSpot {
+public class FishSpotEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +26,6 @@ public class FishSpot {
     @Column(columnDefinition = "geography(Point,4326)", nullable = false)
     private Point location;
 
-
+    @Column(nullable = false)
+    private WaterType waterType;
 }
