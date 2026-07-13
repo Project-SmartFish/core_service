@@ -3,7 +3,7 @@ package smartfish.modules.fishing_event.application.mapper;
 import org.springframework.stereotype.Component;
 import smartfish.modules.fishing_event.application.dto.request.create.CreateFishingEventRequest;
 import smartfish.modules.fishing_event.application.dto.response.create.CreateFishingEventResponse;
-import smartfish.modules.fishing_event.domain.FishingEventEntity;
+import smartfish.modules.fishing_event.domain.core.FishingEventEntity;
 
 @Component
 public class FishingEventMapper {
