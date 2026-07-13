@@ -1,7 +1,8 @@
-package smartfish.modules.fishing_event.domain;
+package smartfish.modules.fishing_event.domain.core;
 
 import jakarta.persistence.*;
 import lombok.*;
+import smartfish.modules.fishing_event.domain.FishingStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
