@@ -20,9 +20,22 @@ public class FishingEventEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Builder.Default
+    @Column(name = "fishing_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FishingStatus fishingStatus = FishingStatus.OPEN;
+
     @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;
 
     @Column(name = "event_time", nullable = false)
     private LocalTime eventTime;
+
+    public void finishEvent() {
+        this.fishingStatus = FishingStatus.CLOSED;
+    }
+
+    public void cancelEvent() {
+        this.fishingStatus = FishingStatus.CANCELLED;
+    }
 }
