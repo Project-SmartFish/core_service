@@ -2,6 +2,7 @@ package smartfish.modules.fishing_event.domain.core;
 
 import jakarta.persistence.*;
 import lombok.*;
+import smartfish.modules.fish_spot.domain.FishSpotEntity;
 import smartfish.modules.fishing_event.domain.FishingStatus;
 
 import java.time.LocalDate;
@@ -20,6 +21,15 @@ public class FishingEventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "fish_spot_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_fishing_event_fish_spot")
+    )
+
+    private FishSpotEntity fishSpot;
 
     @Builder.Default
     @Column(name = "fishing_status", nullable = false)

@@ -6,8 +6,12 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 public record CreateFishingEventRequest(
+
+        @NotNull(message = "Id de local de pesca é obrigatório")
+        UUID fishSpotId,
 
         @NotNull(message = "A data do evento é obrigatória.")
         @FutureOrPresent(message = "A data do evento não pode estar no passado")

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public record CreateFishingEventResponse(
         UUID id,
+        UUID fishSpotId,
         FishingStatus fishingStatus,
         LocalDate eventDate,
         LocalTime eventTime
