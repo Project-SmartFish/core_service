@@ -1,10 +1,15 @@
 package smartfish.modules.fish_spot.application.mapper;
 
 import org.locationtech.jts.geom.*;
+import org.springframework.stereotype.Component;
 import smartfish.modules.fish_spot.application.dto.request.create.CreateFishSpotRequest;
+import smartfish.modules.fish_spot.application.dto.request.update.UpdateFishSpotRequest;
 import smartfish.modules.fish_spot.application.dto.response.FishSpotResponse;
 import smartfish.modules.fish_spot.domain.FishSpotEntity;
 
+import java.util.UUID;
+
+@Component
 public class FishSpotMapper {
 
     private static final GeometryFactory GEOMETRY_FACTORY =
@@ -35,5 +40,22 @@ public class FishSpotMapper {
                 fishSpot.getLocation().getX(),
                 fishSpot.getWaterType()
         );
+    }
+
+    public static FishSpotEntity updateEntity(UUID id, UpdateFishSpotRequest request) {
+
+        Point point = GEOMETRY_FACTORY.createPoint(
+                new Coordinate(
+                        request.longitude(),
+                        request.latitude()
+                )
+        );
+
+        return FishSpotEntity.builder()
+                .id(id)
+                .name(request.name())
+                .location(point)
+                .waterType(request.waterType())
+                .build();
     }
 }

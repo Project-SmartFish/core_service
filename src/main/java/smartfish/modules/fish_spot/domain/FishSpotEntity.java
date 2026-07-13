@@ -31,5 +31,6 @@ public class FishSpotEntity {
     private Point location;
 
     @Column(name = "water_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private WaterType waterType;
 }
