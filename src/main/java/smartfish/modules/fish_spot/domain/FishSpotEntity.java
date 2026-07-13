@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
+import org.locationtech.jts.geom.Point;
 import smartfish.modules.fish_spot.domain.enums.WaterType;
 
 import java.util.UUID;
@@ -17,11 +17,11 @@ import java.util.UUID;
 public class FishSpotEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(columnDefinition = "geography(Point,4326)", nullable = false)
     private Point location;
