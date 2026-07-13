@@ -3,56 +3,59 @@ CREATE TABLE user_account (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    access_level VARCHAR(10) NOT NULL
+    access_level VARCHAR(30) NOT NULL
         CHECK (access_level IN ('ADMIN', 'USER'))
 );
 
 CREATE TABLE fish_spot (
     id UUID PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
-    location GEOMETRY,
-    water_type VARCHAR(20) NOT NULL
+    latitude DECIMAL(10,7) NOT NULL,
+    longitude DECIMAL(10,7) NOT NULL,
+    water_type VARCHAR(30) NOT NULL
         CHECK (water_type IN ('RIVER', 'LAKE', 'FISHING_POND', 'SEA', 'DAM'))
 );
 
 CREATE TABLE fishing_event (
     id UUID PRIMARY KEY,
-    id_fish_spot UUID NOT NULL,
-    fishing_status VARCHAR(20) NOT NULL
+    fish_spot_id UUID NOT NULL,
+    fishing_status VARCHAR(30) NOT NULL
         CHECK (fishing_status IN ('OPEN', 'CLOSED', 'CANCELLED')),
     event_date DATE NOT NULL,
     event_time TIME NOT NULL,
 
     CONSTRAINT fk_fishing_event_fish_spot
-        FOREIGN KEY (id_fish_spot)
+        FOREIGN KEY (fish_spot_id)
         REFERENCES fish_spot(id)
 );
 
 CREATE TABLE user_fishing_event (
     id UUID PRIMARY KEY,
-    id_user UUID NOT NULL,
-    id_fishing_event UUID NOT NULL,
+    user_account_id UUID NOT NULL,
+    fishing_event_id UUID NOT NULL,
 
     CONSTRAINT fk_user_fishing_event_user
-        FOREIGN KEY (id_user)
+        FOREIGN KEY (user_account_id)
         REFERENCES user_account(id),
 
     CONSTRAINT fk_user_fishing_event_event
-        FOREIGN KEY (id_fishing_event)
+        FOREIGN KEY (fishing_event_id)
         REFERENCES fishing_event(id),
 
-    CONSTRAINT uk_user_event
-        UNIQUE (id_user, id_fishing_event)
+    CONSTRAINT uk_user_fishing_event
+        UNIQUE (user_account_id, fishing_event_id)
 );
 
 CREATE TABLE personal_fishing (
     id UUID PRIMARY KEY,
-    id_user_fishing_event UUID NOT NULL,
+    user_fishing_event_id UUID NOT NULL,
     species VARCHAR(100) NOT NULL,
-    amount INT NOT NULL,
-    estimated_weight_kg DECIMAL(5,2) NOT NULL,
+    amount INT NOT NULL
+        CHECK (amount > 0),
+    estimated_weight_kg DECIMAL(5,2) NOT NULL
+        CHECK (estimated_weight_kg >= 0),
 
     CONSTRAINT fk_personal_fishing_user_event
-        FOREIGN KEY (id_user_fishing_event)
+        FOREIGN KEY (user_fishing_event_id)
         REFERENCES user_fishing_event(id)
 );
