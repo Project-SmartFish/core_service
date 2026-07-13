@@ -1,4 +1,4 @@
-package smartfish.com.smartfisha.core;
+package br.com.smartfish.core;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
