@@ -16,18 +16,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
+@Table(name = "fish_spot")
 public class FishSpotEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(columnDefinition = "geography(Point,4326)", nullable = false)
+    @Column(name = "location", columnDefinition = "geography(Point,4326)", nullable = false)
     private Point location;
 
-    @Column(nullable = false)
+    @Column(name = "water_type", nullable = false)
     private WaterType waterType;
 }
