@@ -9,7 +9,10 @@ import smartfish.modules.fishing_event.domain.core.FishingEventEntity;
 @Component
 public class FishingEventMapper {
 
-    public FishingEventEntity toEntity(CreateFishingEventRequest request, FishSpotEntity fishSpot) {
+    public FishingEventEntity toEntity(CreateFishingEventRequest request) {
+        FishSpotEntity fishSpot = FishSpotEntity.builder()
+                .id(request.fishSpotId())
+                .build();
 
         return FishingEventEntity.builder()
                 .fishSpot(fishSpot)
@@ -18,8 +21,7 @@ public class FishingEventMapper {
                 .build();
     }
 
-    public CreateFishingEventResponse toDomain(FishingEventEntity entity) {
-
+    public CreateFishingEventResponse toResponse(FishingEventEntity entity) {
         return new CreateFishingEventResponse(
                 entity.getId(),
                 entity.getFishSpot().getId(),
