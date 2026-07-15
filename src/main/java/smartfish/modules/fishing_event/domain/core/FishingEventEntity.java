@@ -67,6 +67,12 @@ public class FishingEventEntity {
             FishSpotEntity fishSpot,
             LocalDate eventDate,
             LocalTime eventTime) {
+        if (this.fishingStatus != FishingStatus.OPEN) {
+            throw new FishingEventNotOpenException(
+                    "Somente eventos abertos podem ser atualizados"
+            );
+        }
+
         this.fishSpot = fishSpot;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
