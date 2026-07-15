@@ -14,5 +14,7 @@ public interface FishingEventRepository {
 
     List<FishingEventEntity> findAll();
 
+    List<FishingEventEntity> findAllByFishSpotId(UUID id);
+
     void delete(FishingEventEntity entity);
 }

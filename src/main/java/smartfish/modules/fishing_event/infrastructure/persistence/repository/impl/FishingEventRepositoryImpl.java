@@ -1,6 +1,7 @@
 package smartfish.modules.fishing_event.infrastructure.persistence.repository.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import smartfish.modules.fishing_event.domain.core.FishingEventEntity;
 import smartfish.modules.fishing_event.domain.repository.FishingEventRepository;
@@ -29,6 +30,11 @@ public class FishingEventRepositoryImpl implements FishingEventRepository {
     @Override
     public List<FishingEventEntity> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<FishingEventEntity> findAllByFishSpotId(UUID fishSpotId) {
+        return repository.findAllByFishSpotId(fishSpotId);
     }
 
     @Override
