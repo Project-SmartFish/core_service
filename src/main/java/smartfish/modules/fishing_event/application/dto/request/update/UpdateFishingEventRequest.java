@@ -10,6 +10,9 @@ import java.util.UUID;
 
 public record UpdateFishingEventRequest(
 
+        @NotNull(message = "Id do evento de pesca é obrigatório")
+        UUID id,
+
         @NotNull(message = "Id de local de pesca é obrigatório")
         UUID fishSpotId,
 
