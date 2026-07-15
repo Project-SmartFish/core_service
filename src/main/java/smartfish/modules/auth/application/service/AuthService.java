@@ -20,10 +20,6 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public AuthService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
     public UUID register(RegisterUserRequest request) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(request.email());
 
