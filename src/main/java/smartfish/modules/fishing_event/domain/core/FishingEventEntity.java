@@ -1,0 +1,80 @@
+package smartfish.modules.fishing_event.domain.core;
+
+import jakarta.persistence.*;
+import lombok.*;
+import smartfish.modules.fish_spot.domain.FishSpotEntity;
+import smartfish.modules.fishing_event.domain.FishingStatus;
+import smartfish.modules.fishing_event.domain.exception.FishingEventNotOpenException;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.UUID;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Table(name = "fishing_event")
+public class FishingEventEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "fish_spot_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_fishing_event_fish_spot")
+    )
+
+    private FishSpotEntity fishSpot;
+
+    @Builder.Default
+    @Column(name = "fishing_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FishingStatus fishingStatus = FishingStatus.OPEN;
+
+    @Column(name = "event_date", nullable = false)
+    private LocalDate eventDate;
+
+    @Column(name = "event_time", nullable = false)
+    private LocalTime eventTime;
+
+    public void finishEvent() {
+        if (this.fishingStatus != FishingStatus.OPEN) {
+            throw new FishingEventNotOpenException(
+                    "Somente eventos abertos podem ser finalizados"
+            );
+        }
+
+        this.fishingStatus = FishingStatus.CLOSED;
+    }
+
+    public void cancelEvent() {
+        if (this.fishingStatus != FishingStatus.OPEN) {
+            throw new FishingEventNotOpenException(
+                    "Somente eventos abertos podem ser cancelados"
+            );
+        }
+
+        this.fishingStatus = FishingStatus.CANCELLED;
+    }
+
+    public void update(
+            FishSpotEntity fishSpot,
+            LocalDate eventDate,
+            LocalTime eventTime) {
+        if (this.fishingStatus != FishingStatus.OPEN) {
+            throw new FishingEventNotOpenException(
+                    "Somente eventos abertos podem ser atualizados"
+            );
+        }
+
+        this.fishSpot = fishSpot;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+    }
+}
