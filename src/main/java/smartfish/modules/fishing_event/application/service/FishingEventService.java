@@ -26,8 +26,6 @@ public class FishingEventService {
                 fishingEventMapper.toEntity(request);
 
         fishingEventRepository.save(fishingEvent);
-
-        return fishingEventMapper.toResponse(fishingEvent);
     }
 
     public FishingEventResponse findById(UUID uuid) {

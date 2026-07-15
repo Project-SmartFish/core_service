@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import smartfish.modules.fish_spot.domain.FishSpotEntity;
 import smartfish.modules.fishing_event.domain.FishingStatus;
+import smartfish.modules.fishing_event.domain.exception.FishingEventNotOpenException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -43,10 +44,31 @@ public class FishingEventEntity {
     private LocalTime eventTime;
 
     public void finishEvent() {
+        if (this.fishingStatus != FishingStatus.OPEN) {
+            throw new FishingEventNotOpenException(
+                    "Somente eventos abertos podem ser finalizados"
+            );
+        }
+
         this.fishingStatus = FishingStatus.CLOSED;
     }
 
     public void cancelEvent() {
+        if (this.fishingStatus != FishingStatus.OPEN) {
+            throw new FishingEventNotOpenException(
+                    "Somente eventos abertos podem ser cancelados"
+            );
+        }
+
         this.fishingStatus = FishingStatus.CANCELLED;
+    }
+
+    public void update(
+            FishSpotEntity fishSpot,
+            LocalDate eventDate,
+            LocalTime eventTime) {
+        this.fishSpot = fishSpot;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
     }
 }
