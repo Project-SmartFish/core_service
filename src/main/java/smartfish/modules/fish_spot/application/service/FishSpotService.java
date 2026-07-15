@@ -27,7 +27,7 @@ public class FishSpotService {
 
     }
 
-    public void updateFishSpot(UpdateFishSpotRequest request, UUID id) throws FishSpotNotFoundException {
+    public void updateFishSpot(UpdateFishSpotRequest request, UUID id) {
 
         fishSpotRepository.findById(id)
                 .orElseThrow(() -> new FishSpotNotFoundException("Local de pesca não encontrado."));
@@ -37,7 +37,7 @@ public class FishSpotService {
         fishSpotRepository.save(fishSpot);
     }
 
-    public FishSpotResponse findByIdFishSpot (UUID id) throws FishSpotNotFoundException {
+    public FishSpotResponse findByIdFishSpot (UUID id) {
         FishSpotEntity fishSpot = fishSpotRepository.findById(id)
                 .orElseThrow(() -> new FishSpotNotFoundException("Local de pesca não encontrado."));
 
@@ -52,7 +52,7 @@ public class FishSpotService {
                 .toList();
     }
 
-    public void deleteFishSpot (UUID id) throws FishSpotNotFoundException {
+    public void deleteFishSpot (UUID id)  {
         FishSpotEntity fishSpot = fishSpotRepository.findById(id)
                 .orElseThrow(() -> new FishSpotNotFoundException("Local de pesca não encontrado."));
 
