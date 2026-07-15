@@ -2,7 +2,11 @@ package smartfish.modules.user.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -12,7 +16,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "user_account")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -30,4 +34,14 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "access_level", length = 30, nullable = false)
     private AccessLevel accessLevel;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(accessLevel);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }
