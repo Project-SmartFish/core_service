@@ -1,9 +1,16 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  postgres-dev:
+    image: postgis/postgis:16-3.4
+
+    container_name: smartfish-postgres-dev
+
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_DB: ${POSTGRES_TEST_DB}
+      POSTGRES_USER: ${POSTGRES_TEST_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_TEST_PASSWORD}
+
     ports:
-      - '5432'
+      - "5433:5432"
+
+    tmpfs:
+      - /var/lib/postgresql/data
