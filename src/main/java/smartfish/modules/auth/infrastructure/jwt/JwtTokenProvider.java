@@ -10,12 +10,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component
-public class JwtTokenUtil {
+public class JwtTokenProvider {
     private final String secret;
     private final SecretKey key;
     private final long EXPIRATION_TIME = 60*60*1000; // 1 hora em milisegundos
 
-    public JwtTokenUtil(@Value("${SECRET_KEY}") String secret) {
+    public JwtTokenProvider(@Value("${SECRET_KEY}") String secret) {
         this.secret = secret;
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
