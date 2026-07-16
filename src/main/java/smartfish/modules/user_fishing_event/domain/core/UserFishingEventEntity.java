@@ -12,7 +12,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Builder
-@Table(name = "user_fishing_event")
+@Table(
+        name = "user_fishing_event",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_user_fishing_event_user_event",
+                        columnNames = {
+                                "user_id",
+                                "fishing_event_id"
+                        }
+                )
+        }
+)
 public class UserFishingEventEntity {
 
     @Id
