@@ -7,9 +7,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import smartfish.modules.auth.application.dto.request.LoginUserRequest;
 import smartfish.modules.auth.application.dto.request.RegisterUserRequest;
+import smartfish.modules.auth.infrastructure.custom.CustomUserDetails;
 import smartfish.modules.auth.infrastructure.jwt.JwtTokenProvider;
+import smartfish.modules.auth.infrastructure.jwt.TokenIssuer;
 import smartfish.modules.user.application.exception.EmailAlreadyUsedException;
 import smartfish.modules.user.application.mapper.UserMapper;
 import smartfish.modules.user.domain.entity.AccessLevel;
@@ -79,7 +85,7 @@ public class AuthServiceTest {
     @Test
     @DisplayName(
             """
-            Deve lançar a exceção EmailAlreadyUsedExceptio
+            Deve lançar a exceção EmailAlreadyUsedException
             quando o email do cadastro já tiver sido utilizado
             """
     )
@@ -104,5 +110,46 @@ public class AuthServiceTest {
         verify(userMapper, never()).toEntity(request);
         verify(passwordEncoder, never()).encode(request.password());
         verify(userRepository, never()).save(user);
+    }
+
+    @Test
+    @DisplayName(
+            """
+            Deve realizar o login com sucesso
+            quando os dados estiverem válidos
+            """)
+    public void shouldLoginSuccessfully() {
+        // Arrange
+        String randomToken = "we8rsdf87wer87sd8f7wer";
+
+        LoginUserRequest request = new LoginUserRequest(
+                "adryelsapelli@gmail.com",
+                "123456@Aa"
+        );
+
+        CustomUserDetails  userDetails = new CustomUserDetails(
+                UUID.randomUUID(),
+                "Adryel",
+                "adryelsapelli@gmail.com",
+                null,
+                AccessLevel.USER
+        );
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+
+        when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authentication);
+        when(jwtTokenProvider.generateToken(userDetails.getUsername(), TokenIssuer.AUTH)).thenReturn(randomToken);
+
+        // Act
+        String returnedToken = authService.login(request);
+
+        // Assert
+        verify(authenticationManager).authenticate(any(Authentication.class));
+        verify(jwtTokenProvider).generateToken(userDetails.getUsername(), TokenIssuer.AUTH);
+        assertThat(returnedToken).isEqualTo(randomToken);
     }
 }
