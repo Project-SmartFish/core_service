@@ -1,12 +1,15 @@
 package smartfish.modules.auth.application.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import smartfish.modules.auth.application.dto.request.LoginUserRequest;
 import smartfish.modules.auth.application.dto.request.RegisterUserRequest;
+import smartfish.modules.auth.infrastructure.jwt.JwtTokenUtil;
 import smartfish.modules.user.application.exception.EmailAlreadyUsedException;
 import smartfish.modules.user.application.mapper.UserMapper;
 import smartfish.modules.user.domain.entity.UserEntity;
@@ -16,18 +19,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
-    private UserMapper userMapper;
-    private UserRepository userRepository;
-    private AuthenticationManager authenticationManager;
-    private PasswordEncoder passwordEncoder;
-
-    public AuthService(UserMapper userMapper, PasswordEncoder passwordEncoder, UserRepository userRepository, AuthenticationManager authenticationManager) {
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
-    }
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
 
     public UUID register(RegisterUserRequest request) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(request.email());
@@ -43,8 +41,12 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public void login(LoginUserRequest request) {
+    public String login(LoginUserRequest request) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(request.email(), request.password());
-        authenticationManager.authenticate(authentication);
+        authentication = authenticationManager.authenticate(authentication);
+
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+
+        return jwtTokenUtil.generateToken(user.getId(), user.getEmail());
     }
 }
