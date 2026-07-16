@@ -15,7 +15,7 @@ public class JwtTokenExtractor {
     private String secret;
     private SecretKey key;
 
-    public JwtTokenExtractor(@Value("${SECRET_KEY}") String secret) {
+    public JwtTokenExtractor(@Value("${app.jwt.secret}") String secret) {
         this.secret = secret;
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
