@@ -1,6 +1,5 @@
-package smartfish.com.smartfisha.core;
+package smartfish;
 
-import smartfish.CoreServiceApplication;
 import org.springframework.boot.SpringApplication;
 
 public class TestCoreServiceApplication {

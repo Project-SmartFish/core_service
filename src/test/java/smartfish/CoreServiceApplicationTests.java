@@ -1,4 +1,4 @@
-package smartfish.com.smartfisha.core;
+package smartfish;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
