@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import smartfish.modules.auth.application.dto.request.LoginUserRequest;
 import smartfish.modules.auth.application.dto.request.RegisterUserRequest;
+import smartfish.modules.auth.infrastructure.custom.CustomUserDetails;
 import smartfish.modules.auth.infrastructure.jwt.JwtTokenProvider;
 import smartfish.modules.user.application.exception.EmailAlreadyUsedException;
 import smartfish.modules.user.application.mapper.UserMapper;
@@ -44,7 +45,7 @@ public class AuthService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         authentication = authenticationManager.authenticate(authentication);
 
-        UserEntity user = (UserEntity) authentication.getPrincipal();
+        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         return jwtTokenProvider.generateToken(user.getEmail());
     }
