@@ -5,6 +5,7 @@ import smartfish.modules.fishing_event.domain.core.FishingEventEntity;
 import smartfish.modules.user.domain.entity.UserEntity;
 import smartfish.modules.user_fishing_event.application.dto.request.join.JoinFishingEventRequest;
 import smartfish.modules.user_fishing_event.application.dto.response.join.JoinFishingEventResponse;
+import smartfish.modules.user_fishing_event.application.dto.response.read.UserFishingEventResponse;
 import smartfish.modules.user_fishing_event.domain.core.UserFishingEventEntity;
 
 @Component
@@ -20,6 +21,14 @@ public class UserFishingEventMapper {
                 .builder()
                 .fishingEvent(fishingEvent)
                 .build();
+    }
+
+    public UserFishingEventResponse toResponse(UserFishingEventEntity entity) {
+        return new UserFishingEventResponse(
+                entity.getId(),
+                entity.getUser().getId(),
+                entity.getFishingEvent().getId()
+        );
     }
 
     public JoinFishingEventResponse toJoinResponse(UserFishingEventEntity entity) {
