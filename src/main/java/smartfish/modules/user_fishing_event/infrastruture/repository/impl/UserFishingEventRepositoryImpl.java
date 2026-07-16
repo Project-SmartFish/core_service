@@ -17,6 +17,11 @@ public class UserFishingEventRepositoryImpl implements UserFishingEventRepositor
     private final IUserFishingEventJpaRepository repository;
 
     @Override
+    public UserFishingEventEntity save(UserFishingEventEntity entity) {
+        return repository.save(entity);
+    }
+
+    @Override
     public boolean existsByUser_IdAndFishingEvent_Id(UUID userId,
                                                      UUID fishingEventId) {
         return repository.existsByUser_IdAndFishingEvent_Id(

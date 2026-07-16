@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public interface UserFishingEventRepository {
 
+    UserFishingEventEntity save(UserFishingEventEntity entity);
+
     boolean existsByUser_IdAndFishingEvent_Id(
             UUID userId,
             UUID fishingEventId
