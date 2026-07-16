@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -151,5 +152,29 @@ public class AuthServiceTest {
         verify(authenticationManager).authenticate(any(Authentication.class));
         verify(jwtTokenProvider).generateToken(userDetails.getUsername(), TokenIssuer.AUTH);
         assertThat(returnedToken).isEqualTo(randomToken);
+    }
+
+    @Test
+    @DisplayName(
+            """
+            Deve propagar a excecao BadCredentialsException vinda
+            do authenticationManager quando credenciais estiverem invalidas
+            """
+    )
+    public void shouldPropagateBadCredentialsException() {
+        // Arrange
+        LoginUserRequest request = new LoginUserRequest(
+                "adryelsapelli@gmail.com",
+                "123456@Aa"
+        );
+
+        when(authenticationManager.authenticate(any(Authentication.class))).thenThrow(new BadCredentialsException("Login inválido"));
+
+        // Act + Assert
+        assertThatThrownBy(() -> authService.login(request))
+                .isInstanceOf(BadCredentialsException.class);
+
+        verify(authenticationManager).authenticate(any(Authentication.class));
+        verify(jwtTokenProvider, never()).generateToken(anyString(), any(TokenIssuer.class));
     }
 }
