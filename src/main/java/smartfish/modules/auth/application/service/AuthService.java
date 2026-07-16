@@ -46,6 +46,6 @@ public class AuthService {
 
         UserEntity user = (UserEntity) authentication.getPrincipal();
 
-        return jwtTokenProvider.generateToken(user.getId(), user.getEmail());
+        return jwtTokenProvider.generateToken(user.getEmail());
     }
 }
