@@ -23,6 +23,7 @@ public class UserFishingEventEntity {
     @JoinColumn(
             name = "fishing_event_id",
             nullable = false,
+            updatable = false,
             foreignKey = @ForeignKey(name = "fk_user_fishing_event_fishing_event")
     )
     private FishingEventEntity fishingEvent;
@@ -31,6 +32,7 @@ public class UserFishingEventEntity {
     @JoinColumn(
             name = "user_id",
             nullable = false,
+            updatable = false,
             foreignKey = @ForeignKey(name = "fk_user_fishing_event_user")
     )
     private UserEntity user;
