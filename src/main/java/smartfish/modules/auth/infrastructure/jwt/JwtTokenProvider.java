@@ -23,11 +23,11 @@ public class JwtTokenProvider {
     public String generateToken(UUID id, String email) {
         return Jwts
                 .builder()
-                .setIssuer("auth")
-                .setId(id.toString())
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .issuer("auth")
+                .id(id.toString())
+                .subject(email)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
                 .compact();
     }
