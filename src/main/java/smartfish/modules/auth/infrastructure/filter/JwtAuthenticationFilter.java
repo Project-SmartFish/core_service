@@ -1,5 +1,6 @@
 package smartfish.modules.auth.infrastructure.filter;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import smartfish.modules.auth.infrastructure.jwt.TokenIssuer;
 import smartfish.modules.auth.infrastructure.jwt.JwtTokenExtractor;
 
 import java.io.IOException;
@@ -39,7 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String email = jwtTokenExtractor.getSubjectFromToken(token);
+        Claims claims = jwtTokenExtractor.extractClaimsFromToken(token);
+        String email = jwtTokenExtractor.getSubjectFromToken(claims);
+        TokenIssuer tokenIssuer = jwtTokenExtractor.getIssuerFromToken(claims);
+
+        if(!(tokenIssuer == TokenIssuer.AUTH)) {
+            filterChain.doFilter(request,response);
+            return;
+        }
 
         UserDetails userDetails;
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import smartfish.modules.auth.application.dto.request.LoginUserRequest;
 import smartfish.modules.auth.application.dto.request.RegisterUserRequest;
 import smartfish.modules.auth.infrastructure.custom.CustomUserDetails;
+import smartfish.modules.auth.infrastructure.jwt.TokenIssuer;
 import smartfish.modules.auth.infrastructure.jwt.JwtTokenProvider;
 import smartfish.modules.user.application.exception.EmailAlreadyUsedException;
 import smartfish.modules.user.application.mapper.UserMapper;
@@ -47,6 +48,6 @@ public class AuthService {
 
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
-        return jwtTokenProvider.generateToken(user.getEmail());
+        return jwtTokenProvider.generateToken(user.getEmail(), TokenIssuer.AUTH);
     }
 }

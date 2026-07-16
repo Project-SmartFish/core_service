@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.UUID;
 
 @Component
 public class JwtTokenProvider {
@@ -20,10 +19,10 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, TokenIssuer tokenIssuer) {
         return Jwts
                 .builder()
-                .issuer("auth")
+                .issuer(tokenIssuer.name())
                 .subject(email)
                 .claim("email", email)
                 .issuedAt(new Date())
