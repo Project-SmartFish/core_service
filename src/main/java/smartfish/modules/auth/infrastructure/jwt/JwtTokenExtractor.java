@@ -20,12 +20,12 @@ public class JwtTokenExtractor {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public Claims extractClaimsFromToken(String token) {
+    private Claims extractClaimsFromToken(String token) {
 
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
-                .parseClaimsJws(token)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 
@@ -40,7 +40,8 @@ public class JwtTokenExtractor {
         }
     }
 
-    public String getSubjectFromToken(Claims claims) {
+    public String getSubjectFromToken(String token) {
+        Claims claims = extractClaimsFromToken(token);
 
         return claims.getSubject();
     }
