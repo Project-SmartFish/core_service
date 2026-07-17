@@ -24,7 +24,6 @@ public class JwtTokenProvider {
                 .builder()
                 .issuer(tokenIssuer.name())
                 .subject(email)
-                .claim("email", email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
