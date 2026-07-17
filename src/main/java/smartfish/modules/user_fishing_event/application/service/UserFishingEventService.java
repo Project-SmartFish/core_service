@@ -28,7 +28,7 @@ public class UserFishingEventService {
     private final UserFishingEventRepository repository;
     private final FishingEventRepository fishingEventRepository;
     private final UserRepository userRepository;
-    private SecurityCurrentUserProvider userProvider;
+    private final SecurityCurrentUserProvider userProvider;
     private final UserFishingEventMapper mapper;
 
     @Transactional
