@@ -52,4 +52,9 @@ public class UserFishingEventRepositoryImpl implements UserFishingEventRepositor
     public long countByFishingEvent_Id(UUID fishingEventId) {
         return repository.countByFishingEvent_Id(fishingEventId);
     }
+
+    @Override
+    public void delete(UserFishingEventEntity entity) {
+        repository.delete(entity);
+    }
 }

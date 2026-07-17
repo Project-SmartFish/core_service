@@ -11,14 +11,13 @@ import smartfish.modules.user_fishing_event.domain.core.UserFishingEventEntity;
 @Component
 public class UserFishingEventMapper {
 
-    public UserFishingEventEntity toEntity(JoinFishingEventRequest request) {
-        FishingEventEntity fishingEvent = FishingEventEntity
-                .builder()
-                .id(request.fishingEventId())
-                .build();
+    public UserFishingEventEntity toEntity(JoinFishingEventRequest request,
+                                           UserEntity user,
+                                           FishingEventEntity fishingEvent) {
 
         return UserFishingEventEntity
                 .builder()
+                .user(user)
                 .fishingEvent(fishingEvent)
                 .build();
     }

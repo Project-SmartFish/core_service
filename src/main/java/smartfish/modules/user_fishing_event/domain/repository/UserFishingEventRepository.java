@@ -25,4 +25,6 @@ public interface UserFishingEventRepository {
     List<UserFishingEventEntity> findByFishingEvent_Id(UUID fishingEventId);
 
     long countByFishingEvent_Id(UUID fishingEventId);
+
+    void delete(UserFishingEventEntity entity);
 }
